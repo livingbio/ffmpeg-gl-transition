@@ -119,7 +119,7 @@ RUN cd ~/ffmpeg_sources && \
     make install
 
 # FFMPEG-GL-TRANSITION
-COPY . /ffmpeg-gl-transition
+COPY . ~/ffmpeg-gl-transition
 
 # FFMPEG
 RUN cd ~/ffmpeg_sources && \
@@ -127,7 +127,7 @@ RUN cd ~/ffmpeg_sources && \
     tar xjvf ffmpeg-snapshot.tar.bz2 && \
     cd ffmpeg && \
     # BEGIN ffmpeg-transition
-    ln -s /ffmpeg-gl-transition/vf_gltransition.c libavfilter/ && \
+    ln -s ~/ffmpeg-gl-transition/vf_gltransition.c libavfilter/ && \
     git apply ~/ffmpeg-gl-transition/ffmpeg.diff && \
     # END ffmpeg-transition
     PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
