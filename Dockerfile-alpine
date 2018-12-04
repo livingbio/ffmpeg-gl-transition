@@ -301,16 +301,38 @@ RUN \
         make install ; \
         rm -rf ${DIR}
 
+RUN \
+    apk add -y libxext-dev libx11-dev x11proto-gl-dev && \
+    DIR=/tmp/libglvnd && \
+        git clone --branch master --depth 1 https://github.com/NVIDIA/libglvnd ${DIR} ; \
+        cd ${DIR} ; \
+        ./autogen.sh ; ./configure ; make ; make install ;
+
+RUN \
+    apk add -y libglu1-mesa libglu1-mesa-dev
+
+RUN \
+    apk add -y build-essential libxmu-dev libxi-dev libgl-dev cmake && \
+    apt add -y libegl1-mesa-dev && \
+    DIR=/tmp/glew && \
+    git clone --branch master --depth 1 https://github.com/nigels-com/glew ${DIR} ; \
+    wget -q https://github.com/nigels-com/glew/releases/download/glew-2.1.0/glew-2.1.0.zip ; \
+    cd ${DIR} ; \
+    make SYSTEM=linux-egl ; make install ;
+
 ## ffmpeg https://ffmpeg.org/
 RUN  \
         DIR=/tmp/ffmpeg && mkdir -p ${DIR} && cd ${DIR} && \
         curl -sLO https://ffmpeg.org/releases/ffmpeg-${FFMPEG_VERSION}.tar.bz2 && \
         tar -jx --strip-components=1 -f ffmpeg-${FFMPEG_VERSION}.tar.bz2
 
-
+# FFMPEG-GL-TRANSITION
+COPY . ~/ffmpeg-gl-transition
 
 RUN \
         DIR=/tmp/ffmpeg && mkdir -p ${DIR} && cd ${DIR} && \
+        RUN ln -s ~/ffmpeg-gl-transition/vf_gltransition.c libavfilter/ && \
+        git apply ~/ffmpeg-gl-transition/ffmpeg.diff && \
         ./configure \
         --disable-debug \
         --disable-doc \
@@ -342,7 +364,12 @@ RUN \
         --enable-version3 \
         --extra-cflags="-I${PREFIX}/include" \
         --extra-ldflags="-L${PREFIX}/lib" \
-        --extra-libs=-ldl \
+        # gl-transition
+        --enable-opengl \
+        --enable-filter=gltransition \
+        --extra-libs='-ldl -lGLEW -lEGL' && \
+        # end gl-transition
+        # --extra-libs=-ldl \
         --prefix="${PREFIX}" && \
         make && \
         make install && \
