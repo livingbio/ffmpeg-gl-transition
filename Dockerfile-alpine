@@ -306,7 +306,7 @@ RUN \
     DIR=/tmp/libglvnd && \
         git clone --branch master --depth 1 https://github.com/NVIDIA/libglvnd ${DIR} ; \
         cd ${DIR} ; \
-        ./autogen.sh ; ./configure ; make ; make install ;
+        ./autogen.sh ; ./configure ; make ;
 
 RUN \
     apk add -y libglu1-mesa libglu1-mesa-dev
