@@ -311,24 +311,42 @@ RUN  \
 
 ### libglvnd
 RUN \
-        apk add -y libxext-dev libx11-dev x11proto-gl-dev && \
+        apk add \
+                libxext-dev \
+                libx11-dev \
+                # alpine
+                glproto \
+                # origin: x11proto-gl-dev \
+                && \
         DIR=/tmp/libglvnd && \
                 git clone --branch master --depth 1 https://github.com/NVIDIA/libglvnd ${DIR} ; \
                 cd ${DIR} ; \
                 ./autogen.sh ; ./configure ; make ; make install
 
 RUN \
-        apk add -y mesa-libGLU mesa-libGLU-devel
+        apk add \
+                # alpine
+                mesa-gl \
+                mesa-dev
+                # mesa-libGLU \
+                # mesa-libGLU-devel
 
 ### glew https://github.com/nigels-com/glew
 RUN \
-        apk add -y build-essential libxmu-dev libxi-dev libgl-dev cmake && \
-        apt add -y libegl1-mesa-dev && \
+        apk add \
+                # build-essential \
+                libxmu-dev \
+                libxi-dev \
+                # for https://github.com/nigels-com/glew/issues/192
+                glu-dev \
+                # libgl-dev \
+                # cmake \
+                && \
         DIR=/tmp/glew && mkdir -p ${DIR} && cd ${DIR} && \
-        wget -q https://github.com/nigels-com/glew/releases/download/glew-2.1.0/glew-2.1.0.tgz ; \
-        tar xzf glew-2.1.0.tgz & \
-        cd glew-2.1.0 ; \
-        make SYSTEM=linux-egl ; make install ;
+        curl -sLO https://github.com/nigels-com/glew/releases/download/glew-2.1.0/glew-2.1.0.tgz ; \
+        tar -zx --strip-components=1 -f glew-2.1.0.tgz && \
+        make SYSTEM=linux-egl ; make install && \
+        cp /tmp/glew/lib/* ${PREFIX}/lib
 
 # FFMPEG-GL-TRANSITION
 COPY . /ffmpeg-gl-transition/
@@ -371,11 +389,11 @@ RUN \
         # gl-transition
         --enable-opengl \
         --enable-filter=gltransition \
-        --extra-libs='-ldl -lGLEW -lEGL' && \
+        --extra-libs='-ldl -lGLEW -lEGL' \
         # end gl-transition
         # --extra-libs=-ldl \
         --prefix="${PREFIX}" && \
-        make && \
+        make -j4 && \
         make install && \
         make distclean && \
         hash -r && \
