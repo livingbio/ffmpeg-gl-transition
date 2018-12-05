@@ -2,23 +2,9 @@
 
 FROM python:3
 
-RUN apt update && \
-    apt -y -q install unzip \
-        libxext-dev libx11-dev x11proto-gl-dev && \
-    wget -q https://github.com/NVIDIA/libglvnd/archive/master.zip && \
-    unzip -q master.zip && \
-    cd libglvnd-master && ./autogen.sh && ./configure && make && make install
-
-RUN apt install -y -q libglu1-mesa libglu1-mesa-dev
-
-RUN apt install -y -q build-essential libxmu-dev libxi-dev libgl-dev cmake git && \
-    apt install -y -q libegl1-mesa-dev && \
-    wget -q https://github.com/nigels-com/glew/releases/download/glew-2.1.0/glew-2.1.0.zip && \
-    unzip -q glew-2.1.0.zip && \
-    cd glew-2.1.0 && make SYSTEM=linux-egl && make install
-
 # ref: https://trac.ffmpeg.org/wiki/CompilationGuide/Ubuntu
-RUN apt install -y -q autoconf automake build-essential \
+RUN apt update && \
+    apt install -y -q autoconf automake build-essential \
         cmake \
         git-core \
         libass-dev \
@@ -119,7 +105,25 @@ RUN cd ~/ffmpeg_sources && \
     make install
 
 # FFMPEG-GL-TRANSITION
-COPY . ~/ffmpeg-gl-transition
+RUN cd ~/ffmpeg_sources && \
+    git -C libglvnd pull 2> /dev/null || git clone --quiet --depth 1 https://github.com/NVIDIA/libglvnd && \
+    apt -y -q install unzip \
+    libxext-dev libx11-dev x11proto-gl-dev && \
+    cd libglvnd && ./autogen.sh && ./configure && make && make install
+
+RUN apt install -y -q libglu1-mesa libglu1-mesa-dev
+
+# DUE to https://github.com/nigels-com/glew/issues/65
+RUN cd ~/ffmpeg_sources && \
+    wget -q https://github.com/nigels-com/glew/releases/download/glew-2.1.0/glew-2.1.0.tgz && \
+    tar xzf glew-2.1.0.tgz && \
+    cd glew-2.1.0 && \
+    apt install -y -q build-essential libxmu-dev libxi-dev libgl-dev cmake git && \
+    apt install -y -q libegl1-mesa-dev && \
+    # make SYSTEM=linux-egl && make install
+    cd build && cmake ./cmake && make -j4
+
+COPY . /ffmpeg-gl-transition/
 
 # FFMPEG
 RUN cd ~/ffmpeg_sources && \
@@ -127,14 +131,14 @@ RUN cd ~/ffmpeg_sources && \
     tar xjf ffmpeg-snapshot.tar.bz2 && \
     cd ffmpeg && \
     # BEGIN ffmpeg-transition
-    ln -s ~/ffmpeg-gl-transition/vf_gltransition.c libavfilter/ && \
-    git apply ~/ffmpeg-gl-transition/ffmpeg.diff && \
+    ln -s /ffmpeg-gl-transition/vf_gltransition.c libavfilter/ && \
+    git apply /ffmpeg-gl-transition/ffmpeg.diff && \
     # END ffmpeg-transition
     PATH="$HOME/bin:$PATH" PKG_CONFIG_PATH="$HOME/ffmpeg_build/lib/pkgconfig" ./configure \
         --prefix="$HOME/ffmpeg_build" \
         --pkg-config-flags="--static" \
         --extra-cflags="-I$HOME/ffmpeg_build/include" \
-        --extra-ldflags="-L$HOME/ffmpeg_build/lib" \
+        --extra-ldflags="-L$HOME/ffmpeg_build/lib;/usr/lib64" \
         --extra-libs="-lpthread -lm" \
         --bindir="$HOME/bin" \
         --enable-gpl \
@@ -142,10 +146,10 @@ RUN cd ~/ffmpeg_sources && \
         --enable-libass \
         --enable-libfdk-aac \
         --enable-libfreetype \
-        --enable-libmp3lame \
-        --enable-libtheora \
+        # --enable-libmp3lame \
+        # --enable-libtheora \  # not found
         --enable-libopus \
-        --enable-libxvid \
+        # --enable-libxvid \    # not found
         --enable-libvorbis \
         --enable-libvpx \
         --enable-libx264 \
@@ -153,7 +157,8 @@ RUN cd ~/ffmpeg_sources && \
         --enable-nonfree \
         --enable-opengl \
         --enable-filter=gltransition \
-        --extra-libs='-lGLEW -lEGL' && \
+        --extra-libs='-lEGL' \
+        && \
     PATH="$HOME/bin:$PATH" make && \
     make install && \
     hash -r
