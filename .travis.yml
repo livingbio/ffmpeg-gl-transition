@@ -1,0 +1,10 @@
+sudo: false
+
+services:
+  - docker
+
+install:
+- docker build -t ffmpeg-gl .
+
+script:
+- docker run ffmpeg-gl -v 0 -filters | grep gltransition
