@@ -374,7 +374,7 @@ RUN \
         --enable-libdrm \
         --enable-opengl \
         --enable-filter=gltransition \
-        --extra-libs="-lGLEW -lglfw" \
+        --extra-libs="-lGLEW -lglfw -ldl" \
         --prefix=${PREFIX} \
         --extra-cflags=-I${PREFIX}/include \
         --extra-ldflags=-L${PREFIX}/lib && \
