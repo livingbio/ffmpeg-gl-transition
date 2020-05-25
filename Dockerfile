@@ -16,7 +16,7 @@ RUN     apt-get -yqq update && \
         apt-get clean -y
 
 
-FROM base as build
+FROM    base AS build
 
 ENV     FFMPEG_VERSION=4.2.3 \
         AOM_VERSION=2.0.0 \
