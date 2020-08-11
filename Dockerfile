@@ -34,8 +34,8 @@ ENV     FFMPEG_VERSION=4.3.1 \
         OPUS_VERSION=1.3.1 \
         OPENJPEG_VERSION=2.3.1 \
         THEORA_VERSION=1.1.1 \
-        VORBIS_VERSION=1.3.6 \
-        VPX_VERSION=1.8.2 \
+        VORBIS_VERSION=1.3.7 \
+        VPX_VERSION=1.9.0 \
         WEBP_VERSION=1.1.0 \
         X265_VERSION=3.2.1 \
         LIBZMQ_VERSION=4.3.2 \
@@ -156,10 +156,8 @@ RUN \
 ## libvpx https://www.webmproject.org/code/
 RUN \
         DIR=/tmp/vpx && \
-        mkdir -p ${DIR} && \
+        git clone --branch v${VPX_VERSION} --depth 1 https://chromium.googlesource.com/webm/libvpx ${DIR} && \
         cd ${DIR} && \
-        curl -sL https://codeload.github.com/webmproject/libvpx/tar.gz/v${VPX_VERSION} | \
-        tar -zx --strip-components=1 && \
         ./configure --prefix=${PREFIX} --enable-vp8 --enable-vp9 --enable-vp9-highbitdepth --enable-pic --enable-shared \
         --disable-debug --disable-examples --disable-docs --disable-install-bins && \
         make && \
