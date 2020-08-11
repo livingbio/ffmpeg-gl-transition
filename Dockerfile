@@ -189,7 +189,7 @@ RUN \
         DIR=/tmp/xvid && \
         mkdir -p ${DIR} && \
         cd ${DIR} && \
-        curl -sLO http://downloads.xvid.org/downloads/xvidcore-${XVID_VERSION}.tar.gz && \
+        curl -sLO http://downloads.xvid.com/downloads/xvidcore-${XVID_VERSION}.tar.gz && \
         tar -zx --strip-components=1 -f xvidcore-${XVID_VERSION}.tar.gz && \
         cd build/generic && \
         ./configure --prefix=${PREFIX} --bindir=${PREFIX}/bin && \
