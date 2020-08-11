@@ -168,6 +168,7 @@ RUN \
         DIR=/tmp/vebp && \
         git clone --branch v${WEBP_VERSION} --depth 1 https://chromium.googlesource.com/webm/libwebp ${DIR} && \
         cd ${DIR} && \
+        ./autogen.sh && \
         ./configure --prefix=${PREFIX} --enable-shared && \
         make && \
         make install && \
