@@ -28,7 +28,7 @@ ENV     FFMPEG_VERSION=4.3.1 \
         LAME_VERSION=3.100 \
         LIBASS_VERSION=0.14.0 \
         LIBVIDSTAB_VERSION=1.1.0 \
-        XVID_VERSION=1.3.4 \
+        XVID_VERSION=1.3.7 \
         OGG_VERSION=1.3.4 \
         OPENCOREAMR_VERSION=0.1.5 \
         OPUS_VERSION=1.3.1 \
@@ -187,7 +187,7 @@ RUN \
         make && \
         make install && \
         rm -rf ${DIR}
-## xvid https://www.xvid.com/
+## xvid https://labs.xvid.com/source/#Release
 RUN \
         DIR=/tmp/xvid && \
         mkdir -p ${DIR} && \
