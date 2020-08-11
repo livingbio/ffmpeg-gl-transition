@@ -18,7 +18,7 @@ RUN     apt-get -yqq update && \
 
 FROM    base AS build
 
-ENV     FFMPEG_VERSION=4.2.3 \
+ENV     FFMPEG_VERSION=4.3.1 \
         AOM_VERSION=2.0.0 \
         FDKAAC_VERSION=2.0.1 \
         FONTCONFIG_VERSION=2.13.92 \
