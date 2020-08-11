@@ -23,7 +23,7 @@ ENV     FFMPEG_VERSION=4.3.1 \
         FDKAAC_VERSION=2.0.1 \
         FONTCONFIG_VERSION=2.13.92 \
         FREETYPE_VERSION=2.10.2 \
-        FRIBIDI_VERSION=1.0.9 \
+        FRIBIDI_VERSION=1.0.10 \
         KVAZAAR_VERSION=2.0.0 \
         LAME_VERSION=3.100 \
         LIBASS_VERSION=0.14.0 \
@@ -244,7 +244,7 @@ RUN \
         make && \
         make install && \
         rm -rf ${DIR}
-## fridibi https://www.fribidi.org/
+## fridibi https://github.com/fribidi/fribidi/
 RUN \
         DIR=/tmp/fribidi && \
         mkdir -p ${DIR} && \
