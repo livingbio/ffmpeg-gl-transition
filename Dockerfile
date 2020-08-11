@@ -166,10 +166,8 @@ RUN \
 ## libwebp https://developers.google.com/speed/webp/
 RUN \
         DIR=/tmp/vebp && \
-        mkdir -p ${DIR} && \
+        git clone --branch v${WEBP_VERSION} --depth 1 https://chromium.googlesource.com/webm/libwebp ${DIR} && \
         cd ${DIR} && \
-        curl -sL https://storage.googleapis.com/downloads.webmproject.org/releases/webp/libwebp-${WEBP_VERSION}.tar.gz | \
-        tar -zx --strip-components=1 && \
         ./configure --prefix=${PREFIX} --enable-shared && \
         make && \
         make install && \
