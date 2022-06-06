@@ -9,7 +9,7 @@
 #include "framesync.h"
 
 #ifndef __APPLE__
-# define GL_TRANSITION_USING_EGL //remove this line if you don't want to use EGL
+// # define GL_TRANSITION_USING_EGL // NOTE: could not get EGL to work in ubuntu container!
 #endif
 
 #ifdef __APPLE__
@@ -22,7 +22,6 @@
 
 #ifdef GL_TRANSITION_USING_EGL
 # include <EGL/egl.h>
-# include <EGL/eglext.h>
 #else
 # include <GLFW/glfw3.h>
 #endif
@@ -292,22 +291,7 @@ static int setup_gl(AVFilterLink *inLink)
 #ifdef GL_TRANSITION_USING_EGL
   //init EGL
   // 1. Initialize EGL
-  // c->eglDpy = eglGetDisplay(EGL_DEFAULT_DISPLAY);
-
-  #define MAX_DEVICES 4
-  EGLDeviceEXT eglDevs[MAX_DEVICES];
-  EGLint numDevices;
-
-  PFNEGLQUERYDEVICESEXTPROC eglQueryDevicesEXT =(PFNEGLQUERYDEVICESEXTPROC)
-  eglGetProcAddress("eglQueryDevicesEXT");
-
-  eglQueryDevicesEXT(MAX_DEVICES, eglDevs, &numDevices);
-
-  PFNEGLGETPLATFORMDISPLAYEXTPROC eglGetPlatformDisplayEXT =  (PFNEGLGETPLATFORMDISPLAYEXTPROC)
-  eglGetProcAddress("eglGetPlatformDisplayEXT");
-
-  c->eglDpy = eglGetPlatformDisplayEXT(EGL_PLATFORM_DEVICE_EXT, eglDevs[0], 0);
-
+  c->eglDpy = eglGetDisplay(EGL_DEFAULT_DISPLAY);
   EGLint major, minor;
   eglInitialize(c->eglDpy, &major, &minor);
   av_log(ctx, AV_LOG_DEBUG, "%d%d", major, minor);
