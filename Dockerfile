@@ -516,7 +516,7 @@ RUN  \
 
 
 ## BEGIN: ffmpeg-gl-transition
-RUN apk add mesa-egl mesa-gl glu glu-dev glew-dev glfw-dev
+RUN apk add mesa-egl mesa-gl glu glu-dev glew-dev glfw-dev mesa-dri-swrast
 COPY ./vf_gltransition.c /tmp/ffmpeg/libavfilter/
 COPY ./ffmpeg.diff /tmp/ffmpeg/
 RUN \
