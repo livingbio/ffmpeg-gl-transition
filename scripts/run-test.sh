@@ -1,0 +1,1 @@
+sudo docker run -v $(pwd):/test -w /test --entrypoint=sh ffmpeg-test ./scripts/test.sh

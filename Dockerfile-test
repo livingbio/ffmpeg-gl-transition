@@ -1,0 +1,5 @@
+FROM asia.gcr.io/living-bio/ffmpeg-gl-transition:4.4-scratch as FFMPEG
+
+FROM python:3.9-slim
+
+COPY --from=FFMPEG / /
