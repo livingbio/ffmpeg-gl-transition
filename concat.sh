@@ -23,4 +23,5 @@
     [v001][vt0][vt1][v211]concat=n=4[outv]" \
   -map "[outv]" \
   -c:v libx264 -profile:v baseline -preset slow -movflags faststart -pix_fmt yuv420p \
+  -v 0 \
   -y out.mp4
