@@ -618,6 +618,21 @@ RUN \
 # needed for running it
 RUN apt-get -y install xvfb
 
+RUN (cd /tmp/ffmpeg-gl-transition; ln -s /usr/local/bin/ffmpeg .)
 # try the demo
 RUN (cd /tmp/ffmpeg-gl-transition; xvfb-run -s '+iglx -screen 0 1920x1080x24' bash concat.sh )
 # result would be in out.mp4 in that directory
+
+CMD         ["--help"]
+ENTRYPOINT  ["ffmpeg"]
+
+FROM        base AS release
+LABEL       org.opencontainers.image.authors="julien@rottenberg.info" \
+        org.opencontainers.image.source=https://github.com/jrottenberg/ffmpeg
+
+ENV         LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
+
+CMD         ["--help"]
+ENTRYPOINT  ["ffmpeg"]
+
+COPY --from=build /usr/local /usr/local/
