@@ -1,7 +1,7 @@
 #!/bin/bash
 # Example of concatenating 3 mp4s together with 1-second transitions between them.
 
-./ffmpeg \
+ffmpeg \
   -i media/0.mp4 \
   -i media/1.mp4 \
   -i media/2.mp4 \
@@ -23,4 +23,5 @@
     [v001][vt0][vt1][v211]concat=n=4[outv]" \
   -map "[outv]" \
   -c:v libx264 -profile:v baseline -preset slow -movflags faststart -pix_fmt yuv420p \
+  -v 0 \
   -y out.mp4
