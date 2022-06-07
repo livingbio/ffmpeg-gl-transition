@@ -625,14 +625,3 @@ RUN (cd /tmp/ffmpeg-gl-transition; xvfb-run -s '+iglx -screen 0 1920x1080x24' ba
 
 CMD         ["--help"]
 ENTRYPOINT  ["ffmpeg"]
-
-FROM        base AS release
-LABEL       org.opencontainers.image.authors="julien@rottenberg.info" \
-        org.opencontainers.image.source=https://github.com/jrottenberg/ffmpeg
-
-ENV         LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
-
-CMD         ["--help"]
-ENTRYPOINT  ["ffmpeg"]
-
-COPY --from=build /usr/local /usr/local/
