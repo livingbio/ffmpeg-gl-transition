@@ -8,5 +8,10 @@ steps:
     '.'
   ]
   id: 'build'
+- name: 'asia.gcr.io/$PROJECT_ID/ffmpeg-gl-transition:latest'
+  entrypoint: sh
+  args:
+  - -c
+  - ./scripts/test.sh
 options:
   machineType: E2_HIGHCPU_8
