@@ -48,28 +48,28 @@ ARG     LD_LIBRARY_PATH="/opt/ffmpeg/lib:/opt/ffmpeg/lib64"
 ARG     CFLAGS=-I${PREFIX}/include/
 
 RUN     buildDeps="autoconf \
-                automake \
-                cmake \
-                curl \
-                bzip2 \
-                libexpat1-dev \
-                g++ \
-                gcc \
-                git \
-                gperf \
-                libtool \
-                make \
-                nasm \
-                perl \
-                pkg-config \
-                python \
-                libssl-dev \
-                yasm \
-                zlib1g-dev \
-                libxcb-xfixes0-dev \
-                libdrm-dev \
-                libglew-dev \
-                libglfw3-dev" && \
+        automake \
+        cmake \
+        curl \
+        bzip2 \
+        libexpat1-dev \
+        g++ \
+        gcc \
+        git \
+        gperf \
+        libtool \
+        make \
+        nasm \
+        perl \
+        pkg-config \
+        python \
+        libssl-dev \
+        yasm \
+        zlib1g-dev \
+        libxcb-xfixes0-dev \
+        libdrm-dev \
+        libglew-dev \
+        libglfw3-dev" && \
         apt-get -yqq update && \
         apt-get install -yq --no-install-recommends ${buildDeps}
 ## opencore-amr https://sourceforge.net/projects/opencore-amr/
@@ -396,5 +396,7 @@ ENV         LD_LIBRARY_PATH=/usr/local/lib:/usr/local/lib64
 
 CMD         ["--help"]
 ENTRYPOINT  ["ffmpeg"]
+
+RUN apt-get -y install xvfb
 
 COPY --from=build /usr/local /usr/local/

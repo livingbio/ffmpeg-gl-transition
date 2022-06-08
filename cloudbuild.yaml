@@ -9,6 +9,11 @@ steps:
     '.'
   ]
   id: 'build'
+- name: 'asia.gcr.io/$PROJECT_ID/ffmpeg-gl-transition:latest'
+  entrypoint: sh
+  args:
+  - -c
+  - "./scripts/test.sh"
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'asia.gcr.io/$PROJECT_ID/ffmpeg-gl-transition:$TAG_NAME']
   id: 'push-tag'
