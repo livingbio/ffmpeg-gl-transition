@@ -4,16 +4,12 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [
     'build',
-    '-t', 'asia.gcr.io/$PROJECT_ID/ffmpeg-gl-transition:$TAG_NAME',
-    '-t', 'asia.gcr.io/$PROJECT_ID/ffmpeg-gl-transition:latest',
+    '-t', 'asia.gcr.io/$PROJECT_ID/ffmpeg-gl-transition:ubuntu22.10',
     '.'
   ]
   id: 'build'
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'asia.gcr.io/$PROJECT_ID/ffmpeg-gl-transition:$TAG_NAME']
-  id: 'push-tag'
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'asia.gcr.io/$PROJECT_ID/ffmpeg-gl-transition:latest']
+  args: ['push', 'asia.gcr.io/$PROJECT_ID/ffmpeg-gl-transition:ubuntu22.10']
   id: 'push-latest'
 options:
   machineType: E2_HIGHCPU_8
