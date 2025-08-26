@@ -150,12 +150,11 @@ RUN      buildDeps="autoconf \
 
 WORKDIR     /tmp/workdir
 
-COPY ffmpeg/generate-source-of-truth-ffmpeg-versions.py /tmp/workdir
-COPY ffmpeg/download_tarballs.sh /tmp/workdir
-COPY ffmpeg/build_source.sh /tmp/workdir
-COPY ffmpeg/install_ffmpeg.sh /tmp/workdir
-COPY vf_gltransition.c /tmp/ffmpeg/libavfilter/
-COPY ffmpeg.diff /tmp/ffmpeg/
+COPY generate-source-of-truth-ffmpeg-versions.py /tmp/workdir
+COPY download_tarballs.sh /tmp/workdir
+COPY build_source.sh /tmp/workdir
+COPY install_ffmpeg.sh /tmp/workdir
+
 
 
 RUN \
