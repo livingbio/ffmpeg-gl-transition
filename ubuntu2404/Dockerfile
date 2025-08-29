@@ -108,8 +108,7 @@ ENV LD_LIBRARY_PATH="/opt/ffmpeg/lib:/opt/ffmpeg/lib64:/opt/ffmpeg/lib/aarch64-l
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN     apt-get -yqq update && \
-        apt-get install -yq --no-install-recommends curl jq python3 python3-requests less tree file vim \
-        ca-certificates expat libgomp1 libxcb-shape0 libxcb-xfixes0 libdrm2 libglew2.2 libglfw3 xvfb
+        apt-get install -yq --no-install-recommends curl jq python3 python3-requests less tree file vim
 
 RUN      buildDeps="autoconf \
                     automake \
@@ -145,24 +144,16 @@ RUN      buildDeps="autoconf \
                     openssl \
                     libssl-dev \
                     expat \
-                    libgomp1 \
-                    libxcb-xfixes0-dev \
-                    libdrm-dev \
-                    libglew-dev \
-                    libglfw3-dev" && \
+                    libgomp1" && \
         apt-get -yqq update && \
         apt-get install -yq --no-install-recommends ${buildDeps}
 
 WORKDIR     /tmp/workdir
 
-COPY ubuntu2404/generate-source-of-truth-ffmpeg-versions.py /tmp/workdir
-COPY ubuntu2404/download_tarballs.sh /tmp/workdir
-COPY ubuntu2404/build_source.sh /tmp/workdir
-COPY ubuntu2404/install_ffmpeg.sh /tmp/workdir
-
-## ffmpeg-gl-transition
-COPY ./vf_gltransition.c /tmp/workdir/
-COPY ./ffmpeg.diff /tmp/workdir/
+COPY generate-source-of-truth-ffmpeg-versions.py /tmp/workdir
+COPY download_tarballs.sh /tmp/workdir
+COPY build_source.sh /tmp/workdir
+COPY install_ffmpeg.sh /tmp/workdir
 
 
 
@@ -183,7 +174,6 @@ RUN \
 RUN /tmp/workdir/generate-source-of-truth-ffmpeg-versions.py --library-list kvazaar,libvmaf
 RUN /tmp/workdir/download_tarballs.sh
 RUN /tmp/workdir/build_source.sh
-
 
 RUN /tmp/workdir/generate-source-of-truth-ffmpeg-versions.py --library-list ffmpeg-6.1
 RUN /tmp/workdir/download_tarballs.sh

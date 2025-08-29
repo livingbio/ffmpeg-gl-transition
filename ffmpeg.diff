@@ -1,24 +1,24 @@
 diff --git a/libavfilter/Makefile b/libavfilter/Makefile
-index a90ca30ad7..c0fc73be46 100644
+index 603b532ad0..67883b3f4a 100644
 --- a/libavfilter/Makefile
 +++ b/libavfilter/Makefile
-@@ -367,6 +367,7 @@ OBJS-$(CONFIG_YADIF_FILTER)                  += vf_yadif.o
+@@ -572,6 +572,7 @@ OBJS-$(CONFIG_YAEPBLUR_FILTER)               += vf_yaepblur.o
  OBJS-$(CONFIG_ZMQ_FILTER)                    += f_zmq.o
  OBJS-$(CONFIG_ZOOMPAN_FILTER)                += vf_zoompan.o
  OBJS-$(CONFIG_ZSCALE_FILTER)                 += vf_zscale.o
 +OBJS-$(CONFIG_GLTRANSITION_FILTER)           += vf_gltransition.o
- 
- OBJS-$(CONFIG_ALLRGB_FILTER)                 += vsrc_testsrc.o
- OBJS-$(CONFIG_ALLYUV_FILTER)                 += vsrc_testsrc.o
+ OBJS-$(CONFIG_HSTACK_VAAPI_FILTER)           += vf_stack_vaapi.o framesync.o vaapi_vpp.o
+ OBJS-$(CONFIG_VSTACK_VAAPI_FILTER)           += vf_stack_vaapi.o framesync.o vaapi_vpp.o
+ OBJS-$(CONFIG_XSTACK_VAAPI_FILTER)           += vf_stack_vaapi.o framesync.o vaapi_vpp.o
 diff --git a/libavfilter/allfilters.c b/libavfilter/allfilters.c
-index 6eac828616..0570c1c2aa 100644
+index aa49703c6e..9e95eadf0c 100644
 --- a/libavfilter/allfilters.c
 +++ b/libavfilter/allfilters.c
-@@ -357,6 +357,7 @@ extern AVFilter ff_vf_yadif;
- extern AVFilter ff_vf_zmq;
- extern AVFilter ff_vf_zoompan;
- extern AVFilter ff_vf_zscale;
-+extern AVFilter ff_vf_gltransition;
- 
- extern AVFilter ff_vsrc_allrgb;
- extern AVFilter ff_vsrc_allyuv;
+@@ -535,6 +535,7 @@ extern const AVFilter ff_vf_yaepblur;
+ extern const AVFilter ff_vf_zmq;
+ extern const AVFilter ff_vf_zoompan;
+ extern const AVFilter ff_vf_zscale;
++extern const AVFilter ff_vf_gltransition;
+ extern const AVFilter ff_vf_hstack_vaapi;
+ extern const AVFilter ff_vf_vstack_vaapi;
+ extern const AVFilter ff_vf_xstack_vaapi;
